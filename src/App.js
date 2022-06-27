@@ -13,7 +13,7 @@ function App() {
       
       <Router>
         <Navbar />
-        <Alert message="hi"/>
+        <Alert message="hi changing for git try"/>
         <Routes>
         <Route path="/" element={<Home/>} />
           
