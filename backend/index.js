@@ -2,7 +2,7 @@ const connectToMongo = require('./db');
 const express = require('express');
 const authRoute = require('./routes/Auth')
 const notesRoute = require('./routes/notes')
-
+const  cors = require('cors')
 connectToMongo();
 const app = express();
 const port = 5000;
@@ -10,6 +10,12 @@ const port = 5000;
 // app.get('/',(req,res) =>{
 //     res.send("hello world");
 // })
+
+
+
+app.use(cors())
+
+
 
 app.use(express.json());
 //available routes 

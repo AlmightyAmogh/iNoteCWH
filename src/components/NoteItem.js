@@ -1,8 +1,11 @@
 import { Delete, Edit } from "@material-ui/icons";
-import React from "react";
+import React, { useContext } from "react";
+import NoteContext from "../context/Notes/NoteContext";
 
 
 const NoteItem = (props) => {
+  const context = useContext(NoteContext);
+  const {deleteNote,editNote} = context;
   const { note } = props;
   return (
     <div className="col-md-3">
@@ -10,8 +13,8 @@ const NoteItem = (props) => {
         <div className="card-body my-3">
           <div className="d-flex align-items-center mx-3">
           <h5 className="card-title ">{note.title}</h5>
-          <Delete ></Delete>
-          <Edit></Edit>
+          <Delete onClick={()=>{deleteNote(note._id)}}></Delete>
+          <Edit onClick={()=>{editNote(note._id)}}></Edit>
           </div>
          
           <p className="card-text">{note.description}</p>
