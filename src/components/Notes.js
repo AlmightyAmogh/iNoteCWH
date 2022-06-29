@@ -8,7 +8,7 @@ import NoteItem from "./NoteItem";
 const Notes = () => {
   const context = useContext(noteContext);
 
-  const { notes, getNotes } = context;
+  const { notes, getNotes ,editNote} = context;
   useEffect(() => {
     getNotes();
     // eslint-disable-next-line
@@ -16,14 +16,16 @@ const Notes = () => {
 
   const updateNote = (currentNote) => {
     ref.current.click();
-    setNote({etitle:currentNote.title,edescription:currentNote.description,etag:currentNote.tag});
+    setNote({id:currentNote._id,etitle:currentNote.title,edescription:currentNote.description,etag:currentNote.tag});
   };
   
-  const [note, setNote] = useState({etitle:"",edescription:"",etag:"default"})
+  const [note, setNote] = useState({id:"",etitle:"",edescription:"",etag:"default"})
 
   const handleClick = (e)=>{
-    console.log("Note is updating ", note)
-    e.preventDefault();
+    // console.log("Note is updating ", note)
+    editNote(note.id,note.etitle,note.edescription,note.etag);
+    refClose.current.click();
+    
    
 }
 const onChange = (e) =>{
@@ -31,6 +33,7 @@ const onChange = (e) =>{
 }
 
   const ref = useRef(null);
+  const refClose = useRef(null);
   return (
     <>
       <AddNote />
@@ -91,6 +94,8 @@ const onChange = (e) =>{
                     name="edescription"
                     value={note.edescription}
                     onChange={onChange}
+                    required
+                    minLength={5}
                   />
                 </div>
                 <div className="mb-3">
@@ -104,6 +109,8 @@ const onChange = (e) =>{
                     name="etag"
                     value={note.etag}
                     onChange={onChange}
+                    required
+                    minLength={5}
                   />
                 </div>
 {/* 
@@ -118,13 +125,14 @@ const onChange = (e) =>{
             </div>
             <div className="modal-footer">
               <button
+                ref={refClose}
                 type="button"
                 className="btn btn-secondary"
                 data-bs-dismiss="modal"
               >
                 Close
               </button>
-              <button type="button" className="btn btn-primary" onClick={handleClick}>
+              <button disabled={note.etitle.length<5||note.edescription.length<5} type="button" className="btn btn-primary" onClick={handleClick}>
                 Update Note
               </button>
             </div>
@@ -134,6 +142,9 @@ const onChange = (e) =>{
 
       <div className="row my-3">
         <h2>Your noTes</h2>
+        <div className='container'>
+        {notes.length===0 && "no notes to display"}
+        </div>
         {notes.map((note) => {
           return (
             <NoteItem key={note._id} updateNote={updateNote} note={note} />
